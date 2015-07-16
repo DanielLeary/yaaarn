@@ -1,0 +1,77 @@
+extends layout
+
+mixin item(theItem)
+	.item
+		.item-content
+			a.item-text(href=theItem.url)= theItem.title
+			ul.item-bottom
+				li.item
+					p.item= theItem.points + ' points' 
+					p.item.dot!= '&#8226;'
+				li.item
+					p.item
+						a.item(href=theItem.commentLink) #{theItem.comments} comments
+					p.item.dot!= '&#8226;'
+				li.item
+					p.item
+						= theItem.time + ' '
+						a.item(href=theItem.authorLink) #{theItem.authorName}
+		.item-badges
+			.badge
+				img.badge-icon(src='/images/angry.png' alt='angry')
+				p.badge-num= theItem.angry
+			.badge
+				img.badge-icon(src='/images/sad.png' alt='sad')
+				p.badge-num= theItem.sad
+			.badge
+				img.badge-icon(src='/images/funny.png' alt='funny')
+				p.badge-num= theItem.funny
+			.badge
+				img.badge-icon(src='/images/happy.png' alt='happy')
+				p.badge-num= theItem.happy
+
+
+		.clear-float
+
+
+block content
+	nav.custom-nav
+		div.custom-nav-wrap
+			//Brand and toggle get grouped for better mobile display
+			div.logo-wrap
+				div.logo-margin-wrap
+					a.nav-logo(href='/') YAAARN
+		
+			//Collect the nav links, forms, and other content for toggling
+			div.main-nav-wrap
+				div.link-wrap
+					img.icon-custom.icon-active(src='/images/icon_news2.png' alt='news')
+					a.nav-link.active-link(href='/stories') Stories
+					img.icon-custom(src='/images/icon_profile.png' alt='profile')
+					a.nav-link(href='/profile') Profile
+					img.icon-custom(src='/images/icon_cog.png' alt='settings')
+					a.nav-link(href='/settings') Settings
+				div.search-wrapper
+					form.navbar-form.navbar-right(role='search')
+						div.form-group.has-feedback
+							input.form-control.round-form(type='text', placeholder='Search')
+							span.glyphicon.glyphicon-search.form-control-feedback.search-custom(aria-hidden='true')
+			div.right-nav-wrap
+				p &nbsp
+
+	div.main-wrap
+		.main-left
+			.left-link-wrap
+				a.left-link.active-link(href='/stories/popular') Popular
+				a.left-link(href='/stories/recent') Recent
+				a.left-link(href='/stories/active') Active
+		.main-content		
+			.main-content-inner
+				each item in items
+					+item(item)
+		.main-right
+			p &nbsp
+
+
+
+
