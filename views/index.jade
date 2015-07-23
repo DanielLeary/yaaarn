@@ -14,7 +14,7 @@ mixin item(theItem)
 					p.item.dot!= '&#8226;'
 				li.item
 					p.item
-						= theItem.time + ' '
+						= theItem.time + ' by '
 						a.item(href=theItem.authorLink) #{theItem.authorName}
 		.item-badges
 			.badge
@@ -65,7 +65,7 @@ block content
 				a.left-link.active-link(href='/stories/popular') Popular
 				a.left-link(href='/stories/recent') Recent
 				a.left-link(href='/stories/active') Active
-		.main-content		
+		.main-content
 			.main-content-inner
 				each item in items
 					+item(item)
