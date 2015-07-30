@@ -1,12 +1,23 @@
 var models  = require('../models');
 var express = require('express');
 var router = express.Router();
+var colors = require('colors');
 
 var offlineDb = require('../models2/offlineDb')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+	if (req.user) {
+		console.log("req.user.username is ".green +req.user.username);
+	}
   res.render('index', offlineDb);
+});
+
+router.get('/login-signup', function(req, res, next) {
+	//gives us the error message from the LocalStartegy
+	var theError = req.flash('error')[0];
+	if(theError){console.log(theError.red)}
+	res.render('loginSignup', offlineDb);
 });
 
 

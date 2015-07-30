@@ -179,6 +179,7 @@ body {
 	clear: both;
 }
 
+
 .main-right {
 	width: 120px;
 	float: left;
@@ -296,6 +297,32 @@ p.badge-num {
 	clear: both;
 }
 
+
+/*------------------ login-signup --------------------*/
+
+
+.main-content-inner-form {
+	clear: both;
+	margin-left: 40px;
+	margin-right: 40px;
+}
+
+.form-pad {
+	width: 60px;
+	display: inline-block;
+}
+
+.form-wrapper {
+	width: 270px;
+	display: inline-block;
+	vertical-align: top;
+
+}
+
+h3.signup-login {
+	margin-top: 0px;
+	padding-bottom: 20px;
+}
 
 
 

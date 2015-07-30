@@ -35,38 +35,14 @@ mixin item(theItem)
 
 
 block content
-	nav.custom-nav
-		div.custom-nav-wrap
-			//Brand and toggle get grouped for better mobile display
-			div.logo-wrap
-				div.logo-margin-wrap
-					a.nav-logo(href='/') YAAARN
-		
-			//Collect the nav links, forms, and other content for toggling
-			div.main-nav-wrap
-				div.link-wrap
-					img.icon-custom.icon-active(src='/images/icon_news2.png' alt='news')
-					a.nav-link.active-link(href='/stories') Stories
-					img.icon-custom(src='/images/icon_profile.png' alt='profile')
-					a.nav-link(href='/profile') Profile
-					img.icon-custom(src='/images/icon_cog.png' alt='settings')
-					a.nav-link(href='/settings') Settings
-				div.search-wrapper
-					form.navbar-form.navbar-right(role='search')
-						div.form-group.has-feedback
-							input.form-control.round-form(type='text', placeholder='Search')
-							span.glyphicon.glyphicon-search.form-control-feedback.search-custom(aria-hidden='true')
-			div.right-nav-wrap
-				p &nbsp
+
+	include nav.jade
 
 	div.main-wrap
-		.main-left
-			.left-link-wrap
-				a.left-link.active-link(href='/stories/popular') Popular
-				a.left-link(href='/stories/recent') Recent
-				a.left-link(href='/stories/active') Active
+		include mainLeft.jade
 		.main-content
 			.main-content-inner
+				p #{username}
 				each item in items
 					+item(item)
 		.main-right

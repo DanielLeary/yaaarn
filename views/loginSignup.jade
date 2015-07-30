@@ -1,0 +1,38 @@
+extends layout
+
+block content
+
+	include nav.jade
+
+	div.main-wrap
+		.main-left
+			p &nbsp
+		.main-content
+			.main-content-inner-form
+				.form-wrapper
+					h3.signup-login Signup
+					form(action="api/signup", method="post")
+						.form-group
+							label(for="InputEmail") Email address
+							input(type="email", name="email", class="form-control", id="InputEmail", placeholder="Email")
+						.form-group
+							label(for="InputUsername") Username
+							input(type="username", name="username", class="form-control", id="InputUsername", placeholder="Username")
+						.form-group
+							label(for="InputPassword") Password
+							input(type="password", name="password", class="form-control", id="InputPassword", placeholder="Password")
+						button(type="submit", class="btn btn-primary") Submit
+				.form-pad
+					&nbsp
+				.form-wrapper
+					h3.signup-login Login
+					form(action="api/login", method="post")
+						.form-group
+							label(for="InputUsername") Username
+							input(type="username", name="username", class="form-control", id="InputUsername", placeholder="Username")
+						.form-group
+							label(for="InputPassword") Password
+							input(type="password", name="password", class="form-control", id="InputPassword", placeholder="Password")
+						button(type="submit", class="btn btn-primary") Submit
+		.main-right
+			p &nbsp
