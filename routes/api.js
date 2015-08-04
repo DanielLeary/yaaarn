@@ -16,8 +16,6 @@ router.post('/signup', function(req, res, next) {
 	}).then(function(user) {
 		console.log("Signup successful");
   		console.log(user.get({plain: true}));
-  		//passport.authenticate('local')(req, res, function () {
-            //res.redirect('/');
 
         req.logIn(user, function (err) {
             if (!err){
@@ -30,6 +28,12 @@ router.post('/signup', function(req, res, next) {
     	// Ooops, do some error-handling
     	console.log(error);
   	})
+});
+
+
+router.post('/posturl', function(req, res, next) {
+
+	
 });
 
 module.exports = router;

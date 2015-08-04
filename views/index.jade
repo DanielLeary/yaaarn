@@ -42,7 +42,8 @@ block content
 		include mainLeft.jade
 		.main-content
 			.main-content-inner
-				p #{username}
+				//if username
+				//	p #{username}
 				each item in items
 					+item(item)
 		.main-right

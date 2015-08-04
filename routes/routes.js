@@ -5,20 +5,66 @@ var colors = require('colors');
 
 var offlineDb = require('../models2/offlineDb')
 
+offlineDb.loginError = false;
+offlineDb.loggedIn = false;
+
+
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	if (req.user) {
 		console.log("req.user.username is ".green +req.user.username);
+		offlineDb.username = req.user.username;
 	}
+	else {
+		offlineDb.username = null;
+
+	}
+	offlineDb.loggedIn = req.isAuthenticated();
+	offlineDb.navLogin = false;
   res.render('index', offlineDb);
 });
 
+router.get('/stories', function(req, res, next) {
+	if (req.user) {
+		console.log("req.user.username is ".green +req.user.username);
+		offlineDb.username = req.user.username;
+	}
+	else {
+		offlineDb.username = null;
+
+	}
+	offlineDb.loggedIn = req.isAuthenticated();
+	offlineDb.navLogin = false;
+  res.render('index', offlineDb);
+});
+
+
+
 router.get('/login-signup', function(req, res, next) {
-	//gives us the error message from the LocalStartegy
+	//gives us the error message from the LocalStrategy
 	var theError = req.flash('error')[0];
-	if(theError){console.log(theError.red)}
+	if(theError){
+		console.log(theError.red)
+		offlineDb.loginError = true;
+		offlineDb.theLoginError = theError;
+	}
+	else {
+		offlineDb.loginError = false;
+	}
+	offlineDb.navLogin = true;
 	res.render('loginSignup', offlineDb);
 });
+
+
+router.get('/post', function(req, res, next) {
+	if (!req.isAuthenticated())
+		res.redirect('/login-signup');	
+	res.render('post', offlineDb);
+});
+
+
+
 
 
 router.get('/createstory', function(req, res, next) {

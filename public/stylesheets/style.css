@@ -126,6 +126,36 @@ p, div {
 	top: -2px !important;
 }
 
+.post-wrapper {
+	float: right;
+	margin-right: 40px;
+	margin-top: 12px;
+	-webkit-border-radius: 6px;
+  	-moz-border-radius: 6px;
+  	border-radius: 6px;
+  	background-color: #2178DD;
+}
+
+.post-wrapper:hover {
+	background-color: #104480;
+}
+
+.post-glyph {
+	margin-top: 7px;
+	display: inline-block;
+	padding-right: 10px;
+	padding-left: 15px;
+	color: white;
+}
+
+p.post-p {
+	margin-bottom: 7px;
+	display: inline-block;
+	padding-right: 15px;
+	color: white;
+}
+
+
 .right-nav-wrap {
 	width: 120px;
 	float: left;
@@ -308,22 +338,31 @@ p.badge-num {
 }
 
 .form-pad {
-	width: 60px;
 	display: inline-block;
+	margin-left: 30px;
+	margin-right: 30px;
+	width: 0px;
+	/*
+	border-left: 1px solid #F0F0F0;
+	height: 330px;*/
 }
 
 .form-wrapper {
-	width: 270px;
+	width: 275px;
 	display: inline-block;
 	vertical-align: top;
 
 }
 
-h3.signup-login {
-	margin-top: 0px;
+h4.signup-login {
+	margin-top: 15px;
 	padding-bottom: 20px;
+	font-weight: 700;
 }
 
+.alert-custom {
+	margin-top: 10px;
+}
 
 
 

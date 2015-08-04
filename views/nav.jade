@@ -7,17 +7,44 @@ nav.custom-nav
 		
 			//Collect the nav links, forms, and other content for toggling
 			div.main-nav-wrap
-				div.link-wrap
-					img.icon-custom.icon-active(src='/images/icon_news2.png', alt='news')
-					a.nav-link.active-link(href='/stories') Stories
-					img.icon-custom(src='/images/icon_profile.png', alt='profile')
-					a.nav-link(href='/profile') Profile
-					img.icon-custom(src='/images/icon_cog.png', alt='settings')
-					a.nav-link(href='/settings') Settings
-				div.search-wrapper
-					form.navbar-form.navbar-right(role='search')
-						div.form-group.has-feedback
-							input.form-control.round-form(type='text', placeholder='Search')
-							span.glyphicon.glyphicon-search.form-control-feedback.search-custom(aria-hidden='true')
+				
+				case navLogin
+					when true
+						div.link-wrap
+							img.icon-custom(src='/images/icon_news2.png', alt='news')
+							a.nav-link(href='/stories') Stories
+							
+							if !loggedIn
+								img.icon-custom.icon-active(src='/images/icon_cog.png', alt='settings')
+								a.nav-link.active-link(href='/login-signup') Login/Signup
+							else
+								//img.icon-custom(src='/images/icon_profile.png', alt='profile')
+								//a.nav-link(href='/profile') Profile
+								img.icon-custom(src='/images/icon_cog.png', alt='settings')
+								a.nav-link(href='/logout') Logout
+					default
+						div.link-wrap
+							img.icon-custom.icon-active(src='/images/icon_news2.png', alt='news')
+							a.nav-link.active-link(href='/stories') Stories
+							
+							if !loggedIn
+								img.icon-custom(src='/images/icon_cog.png', alt='settings')
+								a.nav-link(href='/login-signup') Login/Signup
+							else
+								//img.icon-custom(src='/images/icon_profile.png', alt='profile')
+								//a.nav-link(href='/profile') Profile
+								img.icon-custom(src='/images/icon_cog.png', alt='settings')
+								a.nav-link(href='/logout') Logout
+				if loggedIn
+					a(href='/post')
+						.post-wrapper
+							span.glyphicon.glyphicon-pencil.post-glyph
+							p.post-p Post Story
+				//div.search-wrapper
+				//	form.navbar-form.navbar-right(role='search')
+				//		div.form-group.has-feedback
+				//			input.form-control.round-form(type='text', placeholder='Search')
+				//			span.glyphicon.glyphicon-search.form-control-feedback.search-custom(aria-hidden='true')
+
 			div.right-nav-wrap
 				p &nbsp
