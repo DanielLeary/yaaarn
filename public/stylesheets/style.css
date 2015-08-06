@@ -365,7 +365,19 @@ h4.signup-login {
 }
 
 
+/*------------------ post preview --------------------*/
 
+
+.main-content-inner-post-preview {
+	clear: both;
+	margin-left: 40px;
+	margin-right: 40px;
+	padding-bottom: 40px;
+}
+
+img.js-image-replace {
+	max-width: 618px !important;
+}
 
 
 

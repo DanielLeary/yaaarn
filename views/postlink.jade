@@ -1,0 +1,22 @@
+extends layout
+
+block content
+
+	include nav.jade
+
+	div.main-wrap
+		.main-left
+			p &nbsp
+		
+		.main-content
+			.main-content-inner-form
+				.form-wrapper
+					h4.signup-login Post story link
+					form(action="post-preview", method="post")
+						.form-group
+							label(for="InputUrl") Story URL
+							input(type="url", name="url", class="form-control", id="InputUrl", placeholder="http://yourlink.com")
+						button(type="submit", class="btn btn-primary") Post story 
+	
+		.main-right
+			p &nbsp

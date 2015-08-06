@@ -3,18 +3,18 @@ extends layout
 mixin item(theItem)
 	.item
 		.item-content
-			a.item-text(href=theItem.url)= theItem.title
+			a.item-text(href='/post/'+theItem.slugurl)= theItem.title
 			ul.item-bottom
 				li.item
 					p.item= theItem.points + ' points' 
 					p.item.dot!= '&#8226;'
 				li.item
 					p.item
-						a.item(href=theItem.commentLink) #{theItem.comments} comments
+						a.item(href=theItem.commentUrl) #{theItem.comments} comments
 					p.item.dot!= '&#8226;'
 				li.item
 					p.item
-						= theItem.time + ' by '
+						= theItem.date.toDateString() + ' by '
 						a.item(href=theItem.authorLink) #{theItem.authorName}
 		.item-badges
 			.badge
@@ -44,7 +44,8 @@ block content
 			.main-content-inner
 				//if username
 				//	p #{username}
-				each item in items
+				//each item in items
+				each item in stories
 					+item(item)
 		.main-right
 			p &nbsp

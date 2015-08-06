@@ -1,0 +1,25 @@
+extends layout
+
+block content
+
+	include nav.jade
+
+	div.main-wrap
+		.main-left
+			p &nbsp
+		
+		.main-content
+			button(type="submit", class="btn btn-primary", id="submit-final") Publish Draft 
+			.main-content-inner-post-preview
+				h3#theTitle(contentEditable="true") #{theStory.title}
+				h4#theUrl #{theStory.url}
+				//p#theContent(contentEditable="true")!= theStory.content
+				#theContent(contentEditable="true") !{theStory.content}
+	
+		.main-right
+			p &nbsp
+
+	script(type='text/javascript').
+		var storyData =!{JSON.stringify(theStory)}
+
+	script(type='text/javascript', src="/javascripts/postlink.js")

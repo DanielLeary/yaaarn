@@ -6,7 +6,9 @@ var colors = require('colors');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var flash = require('connect-flash');
+var url = require('url');
 var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -76,7 +78,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({ secret: 'af7GJfn57fsAhb67' }));
+var redisURL = url.parse(process.env.REDISCLOUD_URL);
+//console.log(colors.red("Redi password: " + redisURL.auth.split(/:/)[1]));
+app.use(session({
+  store: new RedisStore({
+    host: redisURL.hostname,
+    port: redisURL.port,
+    pass: redisURL.auth.split(/:/)[1]
+  }),
+  secret: 'af7GJfn57fsAhb67'
+}));
 // Remember Me middleware
 app.use( function (req, res, next) {
   if ( req.method == 'POST' && req.url == '/api/login' ) {
