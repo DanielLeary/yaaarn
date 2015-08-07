@@ -10,11 +10,12 @@ mixin item(theItem)
 					p.item.dot!= '&#8226;'
 				li.item
 					p.item
-						a.item(href=theItem.commentUrl) #{theItem.comments} comments
+						a.item(href='/post/'+theItem.commentUrl) #{theItem.comments} comments
 					p.item.dot!= '&#8226;'
 				li.item
 					p.item
-						= theItem.date.toDateString() + ' by '
+						//= theItem.date.toDateString() + ' by '
+						= 'About ' + theItem.humanDate() + ' by '
 						a.item(href=theItem.authorLink) #{theItem.authorName}
 		.item-badges
 			.badge

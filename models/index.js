@@ -5,7 +5,14 @@ var path      = require("path");
 var Sequelize = require("sequelize");
 //var env       = process.env.NODE_ENV || "development";
 //var config    = require(__dirname + '/../config/config.json')[env];
-var sequelize = new Sequelize(process.env.DATABASE_URL, {dialectOptions: {ssl: true}});
+
+// LOCAL DB SETUP
+var DATABASE_URL = 'postgres://yaaarn:c260gDiFzcejw0iPFmXSoBrFUf@localhost:5432/yaaarndb';
+var sequelize = new Sequelize(DATABASE_URL);
+
+// HEROKU DB SETUP
+//var sequelize = new Sequelize(process.env.DATABASE_URL, {dialectOptions: {ssl: true}});
+
 var db        = {};
 
 fs

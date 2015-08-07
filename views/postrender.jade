@@ -10,8 +10,23 @@ block content
 		
 		.main-content
 			.main-content-inner-post-preview
-				h3#theTitle #{theStory.title}
-				h4#theUrl #{theStory.url}
+				a(href=theStory.url, target="_blank"): h3#theTitle.story-title.text-center #{theStory.title}
+				//a#theUrl.a-story(href=theStory.url, target="_blank"): p.p-story.text-center #{theStory.url}
+				
+				.story-info-wrap
+					ul.story-info
+						li.story-info
+							p.story-info= theStory.points + ' points' 
+							p.story-info.dot2!= '&#8226;'
+						li.story-info
+							p.story-info
+								a.story-info(href=theStory.commentUrl) #{theStory.comments} comments
+							p.story-info.dot2!= '&#8226;'
+						li.story-info
+							p.story-info
+								= 'About '+theStory.humanDate() + ' by '
+								a.story-info(href=theStory.authorLink) #{theStory.authorName}
+
 				#theContent !{theStory.text}
 	
 		.main-right

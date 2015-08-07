@@ -9,10 +9,14 @@ block content
 			p &nbsp
 		
 		.main-content
-			button(type="submit", class="btn btn-primary", id="submit-final") Publish Draft 
+			.publish-box
+				button(type="submit", class="btn btn-primary", id="submit-final") Publish Draft 
+				a(href="/postlink" class="btn btn-default discard-button" role="button") Discard Draft
 			.main-content-inner-post-preview
-				h3#theTitle(contentEditable="true") #{theStory.title}
-				h4#theUrl #{theStory.url}
+				//h3#theTitle.h3-story(contentEditable="true") #{theStory.title}
+				h3#theTitle.story-title2.text-center(contentEditable=true) #{theStory.title}
+				
+				//a#theUrl.a-story(href=theStory.url): p.p-story.text-center #{theStory.url}
 				//p#theContent(contentEditable="true")!= theStory.content
 				#theContent(contentEditable="true") !{theStory.content}
 	

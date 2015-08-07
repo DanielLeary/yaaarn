@@ -4,9 +4,11 @@ var router = express.Router();
 var colors = require('colors');
 var request = require('request');
 var readabilityKey = 'f59ad7b4b639497fa5aaf45b6d32fe6310094d7e';
+var cheerio = require('cheerio');
+var moment = require('moment');
+moment().format();
 
-
-var localVars = require('../models2/offlineDb')
+var localVars = require('../models2/offlineDb');
 
 localVars.loginError = false;
 localVars.loggedIn = false;
@@ -19,7 +21,6 @@ localVars.sideEmph = 'popular';
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	if (req.user) {
-		console.log("req.user.username is ".green +req.user.username);
 		localVars.username = req.user.username;
 	}
 	else {
@@ -30,9 +31,9 @@ router.get('/', function(req, res, next) {
 	localVars.sideEmph = 'popular';
 
 	models.Story.findAll({ 
-    	limit: 100,
+    	limit: 50,
     	// Newest first
-    	order :[['date', 'DESC']] 
+    	order :[['points', 'DESC'],['date','DESC']] 
     }).then(function(stories) {
     	localVars.stories = stories;
     	res.render('index', localVars); 
@@ -55,9 +56,9 @@ router.get('/stories', function(req, res, next) {
 	localVars.sideEmph = 'popular';
 
 	models.Story.findAll({ 
-    	limit: 100,
+    	limit: 50,
     	// Newest first
-    	order :[['date', 'DESC']] 
+    	order :[['points', 'DESC'],['date','DESC']] 
     }).then(function(stories) {
     	localVars.stories = stories;
     	res.render('index', localVars); 
@@ -80,7 +81,7 @@ router.get('/stories/recent', function(req, res, next) {
 	localVars.sideEmph = 'recent';
 
 	models.Story.findAll({ 
-    	limit: 100,
+    	limit: 50,
     	// Newest first
     	order :[['date', 'DESC']] 
     }).then(function(stories) {
@@ -105,9 +106,9 @@ router.get('/stories/popular', function(req, res, next) {
 	localVars.sideEmph = 'popular';
 
 	models.Story.findAll({ 
-    	limit: 100,
+    	limit: 50,
     	// Newest first
-    	order :[['points', 'DESC']] 
+    	order :[['points', 'DESC'],['date','DESC']] 
     }).then(function(stories) {
     	localVars.stories = stories;
     	res.render('index', localVars); 
@@ -150,7 +151,6 @@ router.param('storyslug', function (req, res, next, slug) {
 
 router.get('/post/:storyslug', function(req, res, next) {
 	var slug = req.slug;
-	console.log(colors.red('The slug in the router is: ' + slug));
   	models.Story.findOne({ 
     	where: {slugurl: slug} 
     }).then(function(story) {
@@ -185,6 +185,12 @@ router.post('/post-preview', function(req, res, next) {
 	    console.log(theJSON.title.red);
 
 	    localVars.theStory = theJSON;
+
+	    // Add style tags with cheerio
+	    var theHtml = theJSON.content;
+	    theHtml = addStoryTags(theHtml);
+	    localVars.theStory.content = theHtml;
+	    
 	    res.render('postpreview', localVars);
 	  }
 	})
@@ -197,7 +203,8 @@ router.get('/createstory', function(req, res, next) {
 		url:'/',
 		slugurl: '/',
 		title:'How a Tokyo bookstore made me fall back in love with print.', 
-		text:'More test',
+		text
+		:'More test',
 		points:90, 
 		comments:21, 
 		commentUrl:'/',
@@ -212,6 +219,28 @@ router.get('/createstory', function(req, res, next) {
   		console.log('Logging item: ' + story.get({plain: true}))
 	})
 });
+
+
+
+/*------------------ Helpers -------------------*/
+
+function addStoryTags(Text)
+{
+    $ = cheerio.load(Text);
+    $('h1').addClass('h1-story');
+    $('h2').addClass('h2-story');
+    $('h3').addClass('h3-story');
+    $('h4').addClass('h4-story');
+    $('h5').addClass('h5-story');
+    $('h6').addClass('h6-story');
+    $('p').addClass('p-story');
+    $('div').addClass('div-story');
+    $('a').addClass('a-story');
+    $('img').addClass('img-story');
+
+	return $.html();
+}
+
 
 
 module.exports = router;

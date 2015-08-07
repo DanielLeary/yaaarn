@@ -1,4 +1,6 @@
 "use strict";
+var moment = require('moment');
+moment().format();
 
 module.exports = function(sequelize, DataTypes) {
   var Story = sequelize.define("Story", {
@@ -23,6 +25,12 @@ module.exports = function(sequelize, DataTypes) {
         User.hasMany(models.Task)
       }
       */
+    },
+
+    instanceMethods: {
+        humanDate: function() {
+        return moment(this.date).fromNow();
+      }
     }
   });
 

@@ -17,6 +17,7 @@ var routes = require('./routes/routes');
 var api = require('./routes/api');
 
 
+/* OLD SERIALZATION WITH DB
 // Passport session setup.
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -34,6 +35,22 @@ passport.deserializeUser(function(id, done) {
     // Ooops, do some error-handling
     return done(error);
   })
+});
+*/
+
+passport.serializeUser(function(user, done){
+  var sessionUser = { id: user.id, username: user.username, email: user.email}
+  done(null, sessionUser)
+});
+
+passport.deserializeUser(function(sessionUser, done){
+  // The sessionUser object is different from the user mongoose collection
+  // it's actually req.session.passport.user and comes from the session collection
+  console.log(colors.green('Deserialized User is '+sessionUser.username));
+  console.log(colors.green('Deserialized ID is '+sessionUser.id));
+  console.log(colors.green('Deserialized email is '+sessionUser.email));
+
+  done(null, sessionUser)
 });
 
 
