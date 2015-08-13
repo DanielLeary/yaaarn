@@ -5,11 +5,10 @@ block content
 	include nav.jade
 
 	div.main-wrap
-		.main-left
-			p &nbsp
+		include mainLeft.jade
 		
 		.main-content
-			.main-content-inner-post-preview
+			.main-content-inner-post
 				a(href=theStory.url, target="_blank"): h3#theTitle.story-title.text-center #{theStory.title}
 				//a#theUrl.a-story(href=theStory.url, target="_blank"): p.p-story.text-center #{theStory.url}
 				
@@ -24,12 +23,43 @@ block content
 							p.story-info.dot2!= '&#8226;'
 						li.story-info
 							p.story-info
-								= 'About '+theStory.humanDate() + ' by '
+								= 'Posted '+theStory.humanDate() + ' by '
 								a.story-info(href=theStory.authorLink) #{theStory.authorName}
 
-				#theContent !{theStory.text}
-	
+			#theContent !{theStory.text}
+			
+			.thePopover
+				.thePopover-comment-wrap
+					p.comment-head Comment on selection
+					textarea.form-control.popover-textarea(rows="3", placeholder="Comment")
+					.popover-button-wrap
+						button(type="submit", class="btn btn-primary popover-submit", id="submit-final") Comment
+						button(type="submit", class="btn btn-default popover-close", id="submit-final") Close
+				.thePopover-badge-wrap
+					p.comment-head Give selection a badge
+					.badge-square
+						img.badge-icon-popover(src='/images/funny.png' alt='funny')
+						p.badge-num-popover Funny
+					.badge-square
+						img.badge-icon-popover(src='/images/happy.png' alt='happy')
+						p.badge-num-popover Happy
+					.badge-square
+						img.badge-icon-popover(src='/images/sad.png' alt='sad')
+						p.badge-num-popover Sad
+					.badge-square
+						img.badge-icon-popover(src='/images/angry.png' alt='angry')
+						p.badge-num-popover Angry
+
+
 		.main-right
 			p &nbsp
 
-	
+	script(type='text/javascript').
+		var storyData =!{JSON.stringify(theStory)}
+
+	script(type='text/javascript', src="/javascripts/postrender.js")
+
+
+
+
+

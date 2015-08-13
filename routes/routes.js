@@ -7,6 +7,7 @@ var readabilityKey = 'f59ad7b4b639497fa5aaf45b6d32fe6310094d7e';
 var cheerio = require('cheerio');
 var moment = require('moment');
 moment().format();
+var helpers = require('../helpers/helpers');
 
 var localVars = require('../models2/offlineDb');
 
@@ -163,6 +164,7 @@ router.get('/post/:storyslug', function(req, res, next) {
 			});
     	}
     	localVars.theStory = story;
+    	localVars.sideEmph = 'none'; 
     	res.render('postrender', localVars); 
     }).catch(function(error) {
     	console.log(error);
@@ -174,6 +176,8 @@ router.get('/post/:storyslug', function(req, res, next) {
 router.post('/post-preview', function(req, res, next) {
 	if (!req.isAuthenticated())
 		res.redirect('/login-signup');
+
+	// Add in URL validation
 
 	var theUrl = req.body.url;
 	var theRequest = 'http://readability.com/api/content/v1/parser?url=' + theUrl + '&token=' + readabilityKey;
@@ -188,58 +192,20 @@ router.post('/post-preview', function(req, res, next) {
 
 	    // Add style tags with cheerio
 	    var theHtml = theJSON.content;
-	    theHtml = addStoryTags(theHtml);
+	    theHtml = helpers.addStoryTags(theHtml);
 	    localVars.theStory.content = theHtml;
 	    
 	    res.render('postpreview', localVars);
 	  }
+	  else {
+	  	res.render('error', {
+			    message: 'Error retrieving link',
+			    error: {}
+			});
+	  }
 	})
 
 });
-
-
-router.get('/createstory', function(req, res, next) {
-	models.Story.create({
-		url:'/',
-		slugurl: '/',
-		title:'How a Tokyo bookstore made me fall back in love with print.', 
-		text
-		:'More test',
-		points:90, 
-		comments:21, 
-		commentUrl:'/',
-		date: new Date(),
-		authorName: 'Jenny Cross',
-		authorLink: '/',
-		happy: 3,
-		funny:6,
-		sad: 0,
-		angry: 0
-	}).then(function(story) {
-  		console.log('Logging item: ' + story.get({plain: true}))
-	})
-});
-
-
-
-/*------------------ Helpers -------------------*/
-
-function addStoryTags(Text)
-{
-    $ = cheerio.load(Text);
-    $('h1').addClass('h1-story');
-    $('h2').addClass('h2-story');
-    $('h3').addClass('h3-story');
-    $('h4').addClass('h4-story');
-    $('h5').addClass('h5-story');
-    $('h6').addClass('h6-story');
-    $('p').addClass('p-story');
-    $('div').addClass('div-story');
-    $('a').addClass('a-story');
-    $('img').addClass('img-story');
-
-	return $.html();
-}
 
 
 

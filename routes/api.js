@@ -5,6 +5,7 @@ var passport = require('passport');
 var request = require('request');
 var readabilityKey = 'f59ad7b4b639497fa5aaf45b6d32fe6310094d7e';
 var colors = require('colors');
+var helpers = require('../helpers/helpers');
 
 var localVars = require('../models2/offlineDb')
 
@@ -37,10 +38,15 @@ router.post('/submit-draft-link', function(req, res, next) {
 		res.send('login-signup');
 
 	// Need to add script tag sanitization to this 
-	//console.log(colors.green(req.body.theText));
+
+	// Add style tags with cheerio
+	var theHtml = req.body.theText;
+	theHtml = helpers.addStoryTags(theHtml);
+	var theText = theHtml;
+
 	var theTitle = req.body.theTitle;
 	var theUrl = req.body.theUrl;
-	var theText = req.body.theText;
+	//var theText = req.body.theText;
 	var slugUrl = convertToSlug(theTitle);
 	var randomNum = Math.floor(Math.random() * 1000000000) + 1000000000;
 	slugUrl = slugUrl + '-' + randomNum;

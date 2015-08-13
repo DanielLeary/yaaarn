@@ -15,7 +15,7 @@ mixin item(theItem)
 				li.item
 					p.item
 						//= theItem.date.toDateString() + ' by '
-						= 'About ' + theItem.humanDate() + ' by '
+						= 'Posted ' + theItem.humanDate() + ' by '
 						a.item(href=theItem.authorLink) #{theItem.authorName}
 		.item-badges
 			.badge
