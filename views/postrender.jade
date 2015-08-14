@@ -35,18 +35,19 @@ block content
 					.popover-button-wrap
 						button(type="submit", class="btn btn-primary popover-submit", id="submit-final") Comment
 						button(type="submit", class="btn btn-default popover-close", id="submit-final") Close
+					.alert.alert-danger.alreadyCommentedWarning(role="alert") You already commented on that highlight
 				.thePopover-badge-wrap
 					p.comment-head Give selection a badge
-					.badge-square
+					#funny.badge-square
 						img.badge-icon-popover(src='/images/funny.png' alt='funny')
 						p.badge-num-popover Funny
-					.badge-square
+					#happy.badge-square
 						img.badge-icon-popover(src='/images/happy.png' alt='happy')
 						p.badge-num-popover Happy
-					.badge-square
+					#sad.badge-square
 						img.badge-icon-popover(src='/images/sad.png' alt='sad')
 						p.badge-num-popover Sad
-					.badge-square
+					#angry.badge-square
 						img.badge-icon-popover(src='/images/angry.png' alt='angry')
 						p.badge-num-popover Angry
 
@@ -56,6 +57,8 @@ block content
 
 	script(type='text/javascript').
 		var storyData =!{JSON.stringify(theStory)}
+		var storyComments =!{JSON.stringify(allComments)}
+		var theUsername = '#{username}'
 
 	script(type='text/javascript', src="/javascripts/postrender.js")
 

@@ -78,6 +78,33 @@ router.post('/submit-draft-link', function(req, res, next) {
 });
 
 
+router.post('/submit-comment', function(req, res, next) {
+	if (!req.isAuthenticated())
+		res.send('login-signup');
+
+	models.Comment.create({ 
+		text: req.body.commentText,
+	    date: new Date(),
+	    authorName: req.user.username,
+	    authorLink: '/user/' + req.user.username,
+	    sentenceId: req.body.sentenceId,
+	    storyId: req.body.storyId,
+	    parentId: 0
+	}).then(function(story) {
+		models.Story.findOne({
+			where: {id: req.body.storyId}
+		}).then(function(story){
+			story.increment('comments');
+		});
+  		res.send('Comment added successfully');
+	}).catch(function(error) {
+    	// Ooops, do some error-handling
+    	console.log(error);
+  	})
+
+});
+
+
 
 
 /*------------------ Helpers -------------------*/

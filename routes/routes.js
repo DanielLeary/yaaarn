@@ -152,6 +152,12 @@ router.param('storyslug', function (req, res, next, slug) {
 
 router.get('/post/:storyslug', function(req, res, next) {
 	var slug = req.slug;
+	if (req.user) {
+		localVars.username = req.user.username;
+	}
+	else {
+		localVars.username = null;
+	}
   	models.Story.findOne({ 
     	where: {slugurl: slug} 
     }).then(function(story) {
@@ -164,11 +170,27 @@ router.get('/post/:storyslug', function(req, res, next) {
 			});
     	}
     	localVars.theStory = story;
-    	localVars.sideEmph = 'none'; 
-    	res.render('postrender', localVars); 
+    	localVars.sideEmph = 'none';
+
+    	// Get comments on this by user
+    	models.Comment.findAll({
+		  where: {
+		    storyId: story.id
+		  }
+		}).then(function(comments){
+			localVars.allComments = [];
+			if(comments.length>0){
+				// Send users comments to client
+				localVars.allComments = comments;
+			}
+			res.render('postrender', localVars); 
+		}).catch(function(error) {
+    		console.log(error);
+    	});
+
     }).catch(function(error) {
     	console.log(error);
-    })
+    });
 });
 
 

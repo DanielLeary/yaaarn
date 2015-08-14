@@ -1,4 +1,4 @@
-$("#submit-final2").click(function(){
+$("#submit-final").click(function(){
     formatTags('p-story');
     formatTags('li-story');
     formatTags('blockquote-story');
@@ -35,7 +35,7 @@ $("#submit-final2").click(function(){
 
 
 
-$("#submit-final").click(function(){
+$("#submit-final2").click(function(){
     formatTags('p-story');
     formatTags('li-story');
     formatTags('blockquote-story');

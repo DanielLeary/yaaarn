@@ -661,6 +661,10 @@ p.comment-head {
 	margin-left: 10px;
 }
 
+.alreadyCommentedWarning {
+	margin-top: 10px;
+}
+
 .thePopover-badge-wrap {
 	float: left;
 	width: 280px;
