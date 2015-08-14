@@ -149,6 +149,49 @@ router.param('storyslug', function (req, res, next, slug) {
   req.slug = slug;
   next();
 })
+/*
+router.get('/post/:storyslug', function(req, res, next) {
+	var slug = req.slug;
+	if (req.user) {
+		localVars.username = req.user.username;
+	}
+	else {
+		localVars.username = null;
+	}
+  	models.Story.findOne({ 
+    	where: {slugurl: slug} 
+    }).then(function(story) {
+    	if (!story) {
+		    //no story;
+		    res.status(404);
+		    res.render('error', {
+			    message: '404 - Not Found',
+			    error: {}
+			});
+    	}
+    	localVars.theStory = story;
+    	localVars.sideEmph = 'none';
+
+    	// Get comments on this by user
+    	models.Comment.findAll({
+		  where: {
+		    storyId: story.id
+		  }
+		}).then(function(comments){
+			localVars.allComments = [];
+			if(comments.length>0){
+				localVars.allComments = comments;
+			}
+			res.render('postrender', localVars); 
+		}).catch(function(error) {
+    		console.log(error);
+    	});
+
+    }).catch(function(error) {
+    	console.log(error);
+    });
+});
+*/
 
 router.get('/post/:storyslug', function(req, res, next) {
 	var slug = req.slug;
@@ -180,7 +223,6 @@ router.get('/post/:storyslug', function(req, res, next) {
 		}).then(function(comments){
 			localVars.allComments = [];
 			if(comments.length>0){
-				// Send users comments to client
 				localVars.allComments = comments;
 			}
 			res.render('postrender', localVars); 
@@ -192,8 +234,6 @@ router.get('/post/:storyslug', function(req, res, next) {
     	console.log(error);
     });
 });
-
-
 
 router.post('/post-preview', function(req, res, next) {
 	if (!req.isAuthenticated())

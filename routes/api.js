@@ -77,7 +77,7 @@ router.post('/submit-draft-link', function(req, res, next) {
 
 });
 
-
+/* OLD version for single sentence comments
 router.post('/submit-comment', function(req, res, next) {
 	if (!req.isAuthenticated())
 		res.send('login-signup');
@@ -90,7 +90,7 @@ router.post('/submit-comment', function(req, res, next) {
 	    sentenceId: req.body.sentenceId,
 	    storyId: req.body.storyId,
 	    parentId: 0
-	}).then(function(story) {
+	}).then(function(comment) {
 		models.Story.findOne({
 			where: {id: req.body.storyId}
 		}).then(function(story){
@@ -102,6 +102,57 @@ router.post('/submit-comment', function(req, res, next) {
     	console.log(error);
   	})
 
+});
+*/
+
+router.post('/submit-comment', function(req, res, next) {
+	if (!req.isAuthenticated())
+		res.send('login-signup');
+
+	models.Comment.create({ 
+		text: req.body.commentText,
+	    date: new Date(),
+	    authorName: req.user.username,
+	    authorLink: '/user/' + req.user.username,
+	    sentenceId: 0,
+	    storyId: req.body.storyId,
+	    parentId: 0
+	}).then(function(comment) {
+		
+		var sentencesSelected = JSON.parse(req.body.theSentences);
+		
+		// Prepare array of values for bulk create
+		var commentSentencesList = [];
+		for (var i=0; i<sentencesSelected.length; ++i){
+				createdItem = {
+					sentenceId: sentencesSelected[i],
+					CommentId: comment.id
+				}
+				commentSentencesList.push({
+					sentenceId: sentencesSelected[i],
+					CommentId: comment.id
+				});
+		}
+		
+		// DO bulk create
+		models.CommentSentence.bulkCreate(commentSentencesList
+		).then(function() {
+		
+			console.log(colors.red('break point'));
+			models.Story.findOne({
+				where: {id: req.body.storyId}
+			}).then(function(story){
+				console.log(colors.red('break point 2'));
+				story.increment('comments');
+			});
+
+	  		res.send('Comment added successfully');
+
+		}).catch(function(error) {
+    		// Ooops, do some error-handling
+    		console.log(error);
+  		})
+	})
 });
 
 

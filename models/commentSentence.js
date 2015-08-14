@@ -3,19 +3,17 @@ var moment = require('moment');
 moment().format();
 
 module.exports = function(sequelize, DataTypes) {
-  var Comment = sequelize.define("Comment", {
-    text: DataTypes.TEXT,
-    date: DataTypes.DATE,
-    authorName: DataTypes.TEXT,
-    authorLink: DataTypes.TEXT,
+  var CommentSentence = sequelize.define("CommentSentence", {
     sentenceId: DataTypes.BIGINT,
-    storyId: DataTypes.INTEGER,
-    parentId: DataTypes.INTEGER
   }, {
     classMethods: {
-      
       associate: function(models) {
-        Comment.hasMany(models.CommentSentence)
+        CommentSentence.belongsTo(models.Comment, {
+          onDelete: "CASCADE",
+          foreignKey: {
+            allowNull: false
+          }
+        });
       }
     },
 
@@ -26,5 +24,5 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
-  return Comment;
+  return CommentSentence;
 };
