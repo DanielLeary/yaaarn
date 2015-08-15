@@ -3,13 +3,13 @@ var moment = require('moment');
 moment().format();
 
 module.exports = function(sequelize, DataTypes) {
-  var CommentSentence = sequelize.define("CommentSentence", {
+  var BadgeSentence = sequelize.define("BadgeSentence", {
     sentenceId: DataTypes.BIGINT,
     storyId: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
-        CommentSentence.belongsTo(models.Comment, {
+        BadgeSentence.belongsTo(models.Badge, {
           onDelete: "CASCADE",
           foreignKey: {
             allowNull: false
@@ -25,5 +25,5 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
-  return CommentSentence;
+  return BadgeSentence;
 };

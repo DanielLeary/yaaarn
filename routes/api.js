@@ -124,12 +124,9 @@ router.post('/submit-comment', function(req, res, next) {
 		// Prepare array of values for bulk create
 		var commentSentencesList = [];
 		for (var i=0; i<sentencesSelected.length; ++i){
-				createdItem = {
-					sentenceId: sentencesSelected[i],
-					CommentId: comment.id
-				}
 				commentSentencesList.push({
 					sentenceId: sentencesSelected[i],
+					storyId: req.body.storyId,
 					CommentId: comment.id
 				});
 		}
@@ -138,15 +135,64 @@ router.post('/submit-comment', function(req, res, next) {
 		models.CommentSentence.bulkCreate(commentSentencesList
 		).then(function() {
 		
-			console.log(colors.red('break point'));
 			models.Story.findOne({
 				where: {id: req.body.storyId}
 			}).then(function(story){
-				console.log(colors.red('break point 2'));
 				story.increment('comments');
 			});
 
 	  		res.send('Comment added successfully');
+
+		}).catch(function(error) {
+    		// Ooops, do some error-handling
+    		console.log(error);
+  		})
+	})
+});
+
+router.post('/submit-badge', function(req, res, next) {
+	if (!req.isAuthenticated())
+		res.send('login-signup');
+
+	models.Badge.create({ 
+	    date: new Date(),
+	    authorName: req.user.username,
+	    authorLink: '/user/' + req.user.username,
+	    sentenceId: 0,
+	    storyId: req.body.storyId,
+	    badgeType: req.body.badgeType
+	}).then(function(comment) {
+		
+		var sentencesSelected = JSON.parse(req.body.theSentences);
+		
+		// Prepare array of values for bulk create
+		var badgeSentencesList = [];
+		for (var i=0; i<sentencesSelected.length; ++i){
+			badgeSentencesList.push({
+				sentenceId: sentencesSelected[i],
+				storyId: req.body.storyId,
+				BadgeId: comment.id
+			});
+		}
+		
+		// DO bulk create
+		models.BadgeSentence.bulkCreate(badgeSentencesList
+		).then(function() {
+		
+			models.Story.findOne({
+				where: {id: req.body.storyId}
+			}).then(function(story){
+				if (req.body.badgeType == 'funny')
+					story.increment('funny');
+				if (req.body.badgeType == 'happy')
+					story.increment('happy');
+				if (req.body.badgeType == 'sad')
+					story.increment('sad');
+				if (req.body.badgeType == 'angry')
+					story.increment('angry');
+			});
+
+	  		res.send('Badge added successfully');
 
 		}).catch(function(error) {
     		// Ooops, do some error-handling

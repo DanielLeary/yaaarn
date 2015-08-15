@@ -3,18 +3,18 @@ var moment = require('moment');
 moment().format();
 
 module.exports = function(sequelize, DataTypes) {
-  var CommentSentence = sequelize.define("CommentSentence", {
+  var Badge = sequelize.define("Badge", {
+    date: DataTypes.DATE,
+    authorName: DataTypes.TEXT,
+    authorLink: DataTypes.TEXT,
     sentenceId: DataTypes.BIGINT,
-    storyId: DataTypes.INTEGER
+    storyId: DataTypes.INTEGER,
+    badgeType: DataTypes.TEXT
   }, {
     classMethods: {
+      
       associate: function(models) {
-        CommentSentence.belongsTo(models.Comment, {
-          onDelete: "CASCADE",
-          foreignKey: {
-            allowNull: false
-          }
-        });
+        Badge.hasMany(models.BadgeSentence)
       }
     },
 
@@ -25,5 +25,5 @@ module.exports = function(sequelize, DataTypes) {
     }
   });
 
-  return CommentSentence;
+  return Badge;
 };

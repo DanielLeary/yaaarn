@@ -18,14 +18,18 @@ $( document ).ready(function() {
 	}
 });
 
-
-
 $(".sentence").click(function(){
 	$('.tooManyWarning').hide();
 	$('button.popover-submit').prop('disabled', false);
 
+	// Remove highlighted comments upon click of one
+	if ($(this).hasClass('highlight-sentence')){
+		$('.highlight-sentence').removeClass('highlight-sentence');
+		return;
+	}
+
 	$('.thePopover').show(100);
-	$('#theContent').css({ "padding-bottom" : "220px"});
+	$('#commentSection').css({ "padding-bottom" : "220px"});
 
 
 	// If clicked sentence in selected list - remove from list
@@ -36,8 +40,17 @@ $(".sentence").click(function(){
 		$(this).removeClass('active-sentence');
 	}
 	else {
-		$(this).addClass('active-sentence');
-		sentencesSelected.push(sentenceId);
+		//Deselect first sentence if we've selected 5 already
+		if (sentencesSelected.length>4){
+			$('#'+sentencesSelected[0]).removeClass('active-sentence');
+			removeSelected(sentencesSelected[0]);
+			$(this).addClass('active-sentence');
+			sentencesSelected.push(sentenceId);
+		}
+		else{
+			$(this).addClass('active-sentence');
+			sentencesSelected.push(sentenceId);
+		}
 	}
 
 	var storyId = storyData.id;
@@ -48,6 +61,10 @@ $(".sentence").click(function(){
 
 //Comment submission
 $('.popover-submit').click(function(){
+
+	if (sentencesSelected.length<1) {
+		return
+	}
 	var dataToSend = {};
 	dataToSend.commentText = $('.popover-textarea').val();
 	console.log('Comment Text: '+dataToSend.commentText);
@@ -77,13 +94,90 @@ $('.popover-submit').click(function(){
 
 // Close it with button
 $('.popover-close').click(function(){
-	$('#theContent').css({ "padding-bottom" : "20px"});
+	$('#commentSection').css({ "padding-bottom" : "20px"});
 	$('.tooManyWarning').hide();
 	$('.thePopover').hide(100);
 	$('.sentence').removeClass('active-sentence');
 	$('.popover-textarea').val('');
 	sentencesSelected = [];
 });
+
+$('.badge-square').click(function(){
+	if (sentencesSelected.length<1 || $(this).hasClass('disabledBadge')) {
+		return
+	}
+	var dataToSend = {};
+	if($(this).attr('id') == "funny")
+		dataToSend.badgeType = 'funny';
+	if($(this).attr('id') == "happy")
+		dataToSend.badgeType = 'happy';
+	if($(this).attr('id') == "sad")
+		dataToSend.badgeType = 'sad';
+	if($(this).attr('id') == "angry")
+		dataToSend.badgeType = 'angry';
+
+	dataToSend.theSentences = JSON.stringify(sentencesSelected);
+	dataToSend.storyId = storyData.id;
+
+	if (sentencesSelected.length>5) {
+		$('.tooManyWarning').show();
+	} 
+	else {
+		$('.tooManyWarning').hide();
+		
+		//Prevent double clicking submit - duplicate in DB
+		$(this).addClass('disabledBadge');
+		
+		$.post("/api/submit-badge", 
+    	dataToSend,
+    	function(response, status){	    	
+	    	//log response from server
+	    	console.log(response);
+
+	    	$(this).removeClass('disabledBadge');
+	    	//redirect
+	    	$('.popover-close').trigger('click');
+	    });
+	}
+});
+
+
+$("a.comment").click(function(){
+	//substr removes the #
+	var commentId = $(this).attr('href').substr(1);
+	console.log(commentId);
+	$('.highlight-sentence').removeClass('highlight-sentence');
+
+	for (var i=0; i<commentSentences.length; ++i){
+		if (commentSentences[i].CommentId==commentId){
+			var firstSentenceListed = commentSentences[i].sentenceId;
+			console.log('First sentence id '+firstSentenceListed);
+			hiAssociatedSentences(commentId);
+
+			$(this).attr('href', '#'+firstSentenceListed);
+
+			$('html, body').animate({
+        		scrollTop: $( $.attr(this, 'href') ).offset().top
+    		}, 200);
+			$(this).attr('href', '#'+commentId);
+    		return false;
+
+			//$(this).trigger('click');
+		}
+	}
+});
+
+
+
+function hiAssociatedSentences(commentId) {
+	for (var i=0; i<commentSentences.length; ++i){
+		if (commentSentences[i].CommentId==commentId){
+			var sentenceId = commentSentences[i].sentenceId;
+			$('#'+sentenceId).addClass('highlight-sentence');
+		}
+	}
+}
+
 
 function clientLogComment(sentenceID) {
 	sentenceIdsCommented.push(sentenceID);

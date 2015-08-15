@@ -225,7 +225,42 @@ router.get('/post/:storyslug', function(req, res, next) {
 			if(comments.length>0){
 				localVars.allComments = comments;
 			}
-			res.render('postrender', localVars); 
+			// get sentences for those comments
+			models.CommentSentence.findAll({
+				where: {
+					storyId: story.id
+				}
+			}).then(function(commentSentenceList){
+				localVars.sentenceComments = [];
+				if(commentSentenceList.length>0){
+					localVars.sentenceComments = commentSentenceList;
+				}
+
+				//Get all badges for user
+				models.Badge.findAll({
+					where: {
+						storyId: story.id
+					}
+				}).then(function(badges){
+					localVars.allBadges = [];
+					if (badges.length>0){
+						localVars.allBadges = badges;
+					}
+					//Get sentences for those badges
+					models.BadgeSentence.findAll({
+						where: {
+							storyId: story.id
+						}
+					}).then(function(badgeSentenceList){
+						localVars.sentenceBadges = [];
+						if(badgeSentenceList.length>0){
+							localVars.sentenceBadges = badgeSentenceList;
+						}
+						res.render('postrender', localVars); 
+					})
+				})
+			})
+
 		}).catch(function(error) {
     		console.log(error);
     	});

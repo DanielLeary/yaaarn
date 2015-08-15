@@ -1,5 +1,21 @@
 extends layout
 
+mixin comment(theComment)
+	.comment-wrap
+		p.comment #{theComment.text}
+		ul.comment-bottom
+			li.comment
+				a.comment(href=theComment.authorLink) #{theComment.authorName}
+				p.comment-info
+					//= theItem.date.toDateString() + ' by '
+					= ' commented ' + theComment.humanDate()
+				p.item.dot!= '&#8226;'
+			li.comment
+					a.comment(href='#'+theComment.id) Go to selections
+
+
+
+
 block content
 
 	include nav.jade
@@ -19,7 +35,7 @@ block content
 							p.story-info.dot2!= '&#8226;'
 						li.story-info
 							p.story-info
-								a.story-info(href=theStory.commentUrl) #{theStory.comments} comments
+								a.story-info(href='#commentSection') #{theStory.comments} comments
 							p.story-info.dot2!= '&#8226;'
 						li.story-info
 							p.story-info
@@ -35,15 +51,15 @@ block content
 					.popover-button-wrap
 						button(type="submit", class="btn btn-primary popover-submit", id="submit-final") Comment
 						button(type="submit", class="btn btn-default popover-close", id="submit-final") Close
-					.alert.alert-danger.tooManyWarning(role="alert") You can comment on 5 selections max
+					.alert.alert-danger.tooManyWarning(role="alert") 5 selections max
 				.thePopover-badge-wrap
 					p.comment-head Give selection a badge
-					#funny.badge-square
-						img.badge-icon-popover(src='/images/funny.png' alt='funny')
-						p.badge-num-popover Funny
 					#happy.badge-square
 						img.badge-icon-popover(src='/images/happy.png' alt='happy')
 						p.badge-num-popover Happy
+					#funny.badge-square
+						img.badge-icon-popover(src='/images/funny.png' alt='funny')
+						p.badge-num-popover Funny
 					#sad.badge-square
 						img.badge-icon-popover(src='/images/sad.png' alt='sad')
 						p.badge-num-popover Sad
@@ -51,6 +67,10 @@ block content
 						img.badge-icon-popover(src='/images/angry.png' alt='angry')
 						p.badge-num-popover Angry
 
+			#commentSection
+				h3.commentSection Comments
+				each comment in allComments
+					+comment(comment)
 
 		.main-right
 			p &nbsp
@@ -58,6 +78,9 @@ block content
 	script(type='text/javascript').
 		var storyData =!{JSON.stringify(theStory)}
 		var storyComments =!{JSON.stringify(allComments)}
+		var commentSentences =!{JSON.stringify(sentenceComments)}
+		var storyBadges =!{JSON.stringify(allBadges)}
+		var badgeSentences =!{JSON.stringify(sentenceBadges)}
 		var theUsername = '#{username}'
 
 	script(type='text/javascript', src="/javascripts/postrender.js")
