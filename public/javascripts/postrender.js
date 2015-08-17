@@ -9,31 +9,12 @@ $( document ).ready(function() {
 	//of sentences current user commented on
 	sentencesSelected = [];
 
-	// Log comment sentence Ids user already commented on
-	sentenceIdsCommented = [];
-	for(var i=0; i<storyComments.length;++i){
-		var comment = storyComments[i];
-		if(comment.authorName==theUsername){	
-			sentenceIdsCommented.push(comment.sentenceId);
-			//console.log("Comment by "+theUsername+": "+comment.text);
-			//console.log("Comment date: "+moment(comment.date).fromNow());
-		}
-	}
+	// Add has-content highlights to sentences with content
+	hasContentStyle()
 
-	for (var i=0; i<commentSentences.length;++i){
-		var sentenceId = commentSentences[i].sentenceId;
-		var sentenceNode = $('#'+sentenceId);
+	// Create comment section at bottom
+	refreshCommentUI();
 
-		if(!sentenceNode.hasClass('has-content'))
-			sentenceNode.addClass('has-content');
-	}
-	for (var i=0; i<badgeSentences.length;++i){
-		var sentenceId = badgeSentences[i].sentenceId;
-		var sentenceNode = $('#'+sentenceId);
-
-		if(!sentenceNode.hasClass('has-content'))
-			sentenceNode.addClass('has-content');
-	}
 
 });
 
@@ -112,7 +93,15 @@ $('.popover-submit').click(function(){
     	function(response, status){	    	
 	    	//log response from server
 	    	console.log(response);
+			
+			// Refresh the data in the client
+	    	refreshData();
 
+	    	//Reload page
+	    	//location.reload();
+
+	    	//NOTE - UI comment section refresh in refreshData() function
+	    	
 	    	//redirect
 	    	$('.popover-close').trigger('click');
 	    });
@@ -164,6 +153,9 @@ $('.badge-square').click(function(){
 	    	//log response from server
 	    	console.log(response);
 
+	    	// Refresh the data in the client
+	    	refreshData();
+
 	    	$(this).removeClass('disabledBadge');
 	    	//redirect
 	    	$('.popover-close').trigger('click');
@@ -172,7 +164,8 @@ $('.badge-square').click(function(){
 });
 
 
-$("a.comment").click(function(){
+//$("a.comment").click(function(){
+$(document).on('click', 'a.comment', function(){
 	//substr removes the #
 	var commentId = $(this).attr('href').substr(1);
 	console.log(commentId);
@@ -366,17 +359,6 @@ function clientLogComment(sentenceID) {
 	sentenceIdsCommented.push(sentenceID);
 }
 
-/*
-function alreadyCommented(sentenceID) {
-	for(var i=0; i<sentenceIdsCommented.length; ++i){
-		if (sentenceIdsCommented[i]==sentenceID) {
-			return true;
-		}
-	}
-	return false;
-}
-*/
-
 function alreadySelected(sentenceID) {
 	for(var i=0; i<sentencesSelected.length; ++i){
 		if (sentencesSelected[i]==sentenceID) {
@@ -394,67 +376,101 @@ function removeSelected(sentenceID) {
 	}
 }
 
-/* OLD ONE - single sentence highlight
-$(".sentence").click(function(){
-	if ($('.thePopover').attr('display')!='hide'){
-		$('.thePopover').hide(100);
-		$('.sentence').removeClass('active-sentence');
-		$('.popover-textarea').val('');
+function refreshData(){
+	var sendData = {};
+	sendData.storyId = storyData.id;
+	$.post("/api/get-story-data", 
+	sendData,
+	function(newData, status){	    	
+    	//log response from server
+    	var theData = JSON.parse(newData);
+
+    	//Update all our data
+    	storyComments =	theData.comments;
+		commentSentences = theData.commentSentences;
+		storyBadges = theData.badges;
+		badgeSentences = theData.badgeSentences;
+
+		// Create comment section at bottom
+    	var toRestore = $('h3.commentSection').clone();
+    	$('#commentSection').empty(); //This deletes comments ahead of refresh
+		toRestore.appendTo('#commentSection');
+		refreshCommentUI();
+		hasContentStyle()
+
+		$('.badge-square').removeClass('disabledBadge');
+    	
+    });
+}
+
+
+function refreshCommentUI(){
+	if (storyComments.length<1){
+		var nodeString = "<p class=\"comment\">No comments yet</p>";
+		var node = $($.parseHTML(nodeString));
+		node.appendTo('#commentSection');
+		return;
 	}
 
-	$('.alreadyCommentedWarning').hide();
-	$('button.popover-submit').prop('disabled', false);
+	var nodeString = 
+	"<div id=\"\" class=\"comment-wrap\">" +
+		"<p class=\"comment\"></p>" +
+		"<ul class=\"comment-bottom\">" +
+			"<li class=\"comment\">" +
+				"<a href=\"\" class=\"comment-author\"></a>" +
+				"<p class=\"comment-info\"></p>" +
+				"<p class=\"item dot\">•</p>" +
+			"</li>" +
+			"<li class=\"comment\">" +
+				"<a href=\"\" class=\"comment\">Go to selection</a>" +
+			"</li>" +
+		"</ul>" +
+	"</div>";
 
-	$('.thePopover').show(100);
-	$('#theContent').css({ "padding-bottom" : "220px"});
-	$(this).addClass('active-sentence');
+	for (var i=0; i<storyComments.length; ++i){
+		var currentComment = storyComments[i];
+		//var node = $('.info-box-comment-wrap').clone();
+		var node = $($.parseHTML(nodeString));
+		
+		node.attr('id', 'comment-'+currentComment.id);
+		node.children('p.comment').text(currentComment.text);
+		node.children('ul.comment-bottom')
+			.children('li.comment')
+				.children('a.comment-author').attr('href', '/profile/'+currentComment.authorName);
+		node.children('ul.comment-bottom')
+			.children('li.comment')
+				.children('a.comment-author').text(currentComment.authorName);
+		node.children('ul.comment-bottom')
+			.children('li.comment')
+				.children('p.comment-info').text(' commented '+moment(currentComment.date).fromNow());
+		node.children('ul.comment-bottom')
+			.children('li.comment')
+				.children('a.comment').attr('href', "#"+currentComment.id);
+		
+		node.appendTo('#commentSection');
+
+	}
+}
+
+function hasContentStyle(){
+	// Add has-content highlights to sentences with content
+	for (var i=0; i<commentSentences.length;++i){
+		var sentenceId = commentSentences[i].sentenceId;
+		var sentenceNode = $('#'+sentenceId);
+
+		if(!sentenceNode.hasClass('has-content'))
+			sentenceNode.addClass('has-content');
+	}
+	for (var i=0; i<badgeSentences.length;++i){
+		var sentenceId = badgeSentences[i].sentenceId;
+		var sentenceNode = $('#'+sentenceId);
+
+		if(!sentenceNode.hasClass('has-content'))
+			sentenceNode.addClass('has-content');
+	}
+}
 
 
-	var sentenceId = $(this).attr('id');
-	var storyId = storyData.id;
-	console.log('Sentence ID: '+sentenceId);
-	console.log('Story ID: '+storyId);
 
-	//Comment submission
-	$('.popover-submit').click(function(){
-		var dataToSend = {};
-		dataToSend.commentText = $('.popover-textarea').val();
-		console.log('Comment Text: '+dataToSend.commentText);
-		dataToSend.sentenceId = sentenceId;
-		dataToSend.storyId = storyId;
 
-		if (alreadyCommented(sentenceId)) {
-			$('.alreadyCommentedWarning').show();
-		} 
-		else {
-			$('.alreadyCommentedWarning').hide();
-			
-			//Prevent double clicking submit - duplicate in DB
-			$('button.popover-submit').prop('disabled', true);
-			
-			$.post("/api/submit-comment", 
-	    	dataToSend,
-	    	function(response, status){	    	
-		    	//log response from server
-		    	console.log(response);
 
-		    	// To prevent multiple comments
-		    	clientLogComment(sentenceId);
-
-		    	//redirect
-		    	$('.popover-close').trigger('click');
-		    });
-		}
-	});
-	
-});
-
-// Close it with button
-$('.popover-close').click(function(){
-	$('#theContent').css({ "padding-bottom" : "20px"});
-	$('.alreadyCommentedWarning').hide();
-	$('.thePopover').hide(100);
-	$('.sentence').removeClass('active-sentence');
-	$('.popover-textarea').val('');
-});
-*/

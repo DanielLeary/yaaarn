@@ -139,6 +139,7 @@ router.post('/submit-comment', function(req, res, next) {
 				where: {id: req.body.storyId}
 			}).then(function(story){
 				story.increment('comments');
+				story.increment('points');
 			});
 
 	  		res.send('Comment added successfully');
@@ -190,6 +191,9 @@ router.post('/submit-badge', function(req, res, next) {
 					story.increment('sad');
 				if (req.body.badgeType == 'angry')
 					story.increment('angry');
+
+				story.increment('points');
+
 			});
 
 	  		res.send('Badge added successfully');
@@ -201,6 +205,62 @@ router.post('/submit-badge', function(req, res, next) {
 	})
 });
 
+router.post('/get-story-data', function(req, res, next) {
+	var dataToSend = {};
+	dataToSend.comments = [];
+	dataToSend.commentSentences = [];
+	dataToSend.badges = [];
+	dataToSend.badgeSentences = [];
+
+	models.Comment.findAll({
+		where: {
+			storyId: req.body.storyId
+		}
+	}).then(function(comments){
+		dataToSend.comments = comments;
+
+		models.CommentSentence.findAll({
+			where: {
+				storyId: req.body.storyId
+			}
+		}).then(function(commentsSentences){
+			dataToSend.commentSentences = commentsSentences;
+
+			models.Badge.findAll({
+				where: {
+					storyId: req.body.storyId
+				}
+			}).then(function(badges){
+				dataToSend.badges = badges;
+
+				models.BadgeSentence.findAll({
+					where: {
+						storyId: req.body.storyId
+					}
+				}).then(function(badgeSentences){
+					dataToSend.badgeSentences = badgeSentences;
+
+					res.send(JSON.stringify(dataToSend));
+				}).catch(function(error) {
+    				// Ooops, do some error-handling
+    				console.log(error);
+  				})	
+
+			}).catch(function(error) {
+    			// Ooops, do some error-handling
+    			console.log(error);
+  			})
+
+		}).catch(function(error) {
+    		// Ooops, do some error-handling
+    		console.log(error);
+  		})
+
+	}).catch(function(error) {
+    	// Ooops, do some error-handling
+    	console.log(error);
+  	})
+});
 
 
 
