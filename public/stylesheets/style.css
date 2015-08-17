@@ -576,6 +576,17 @@ a.story-info {
 
 }
 
+.has-content {
+	background-color: #FFF9CC;
+	padding: 2px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	margin-left: -2px;
+	margin-right: -2px;
+	-webkit-border-radius: 5px;
+  	-moz-border-radius: 5px;
+  	border-radius: 5px;
+}
 
 .sentence {
 	padding-top: 7px;
@@ -584,7 +595,7 @@ a.story-info {
 }
 
 .sentence:hover {
-	background-color: #FFF39B;
+	background-color: #FFEB59;
 	padding: 2px;
 	padding-top: 7px;
 	padding-bottom: 7px;
@@ -597,7 +608,7 @@ a.story-info {
 }
 
 .sentence:active {
-	background-color: #FFF39B;
+	background-color: #FFEB59;
 	padding: 2px;
 	padding-top: 7px;
 	padding-bottom: 7px;
@@ -610,7 +621,7 @@ a.story-info {
 }
 
 .active-sentence {
-	background-color: #FFF39B;
+	background-color: #FFEB59;
 	padding: 2px;
 	padding-top: 7px;
 	padding-bottom: 7px;
@@ -736,6 +747,7 @@ h3.commentSection {
 	padding-top: 10px;
 	padding-bottom: 20px;
 	border-bottom: 1px solid #F0F0F0;
+	margin-bottom: 0px;
 
 }
 
@@ -745,8 +757,12 @@ h3.commentSection {
 	margin-left: auto;
 	margin-right: auto;
 	padding-bottom: 12px;
-	margin-bottom: 15px;
+	padding-top: 15px;
 	border-bottom: 1px solid #F0F0F0;
+}
+
+.hi-in-comment-section{
+	background-color: #FFF9CC;
 }
 			
 ul.comment-bottom {
@@ -772,7 +788,7 @@ li.comment {
 p.comment {
 	font-family: 'Merriweather', sans-serif;
 	font-weight: 400;
-	margin-top: 20px;
+	margin-top: 0px;
 	line-height: 30px;
 	margin-left: 0px;
 	margin-right: 0px;
@@ -809,5 +825,76 @@ a.comment {
 	color: #bababa;
 	text-decoration: underline;
 }
+
+
+/*------------------ Info box --------------------*/
+
+.info-box-wrap {
+	position: absolute;
+	top: 900px;
+	left: 900px;
+}
+
+.info-badge-square {
+	display: inline-block;
+	width: 30px;
+	height: 50px;
+	margin-right: 5px;
+	border: 1px;
+}
+
+img.badge-icon-info{
+	height: 20px;
+	display: block;
+	margin-bottom: 6px;
+	margin-top: 15px;
+	margin-left: 4px;
+}
+
+.info-box-comment-count {
+	margin-top: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: 1px solid #F0F0F0;
+	border-bottom: 1px solid #F0F0F0;
+
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 12px;
+	color: #bababa;
+}
+
+.info-box-comment-wrap{
+	margin-top: 10px;
+	border-bottom: 1px solid #F0F0F0;
+	padding-bottom: 10px;
+	width: 150px;
+}
+
+p.info-box-comment-text{
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 12px;
+}
+
+a.info-box-author{
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 12px;
+	color: #bababa;
+	display: block;
+}
+
+a.info-box-read-link{
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 12px;
+	color: #bababa;
+	text-decoration: underline;
+}
+
+
+
+
 
 

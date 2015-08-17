@@ -1,7 +1,7 @@
 extends layout
 
 mixin comment(theComment)
-	.comment-wrap
+	.comment-wrap(id='comment-'+theComment.id)
 		p.comment #{theComment.text}
 		ul.comment-bottom
 			li.comment
@@ -11,7 +11,7 @@ mixin comment(theComment)
 					= ' commented ' + theComment.humanDate()
 				p.item.dot!= '&#8226;'
 			li.comment
-					a.comment(href='#'+theComment.id) Go to selections
+					a.comment(href='#'+theComment.id) Go to selection
 
 
 
@@ -69,10 +69,34 @@ block content
 
 			#commentSection
 				h3.commentSection Comments
+				if allComments.length<1
+					p.comment No comments yet
 				each comment in allComments
 					+comment(comment)
 
 		.main-right
+			.info-box-wrap
+				.info-badge-square.info-happy-square
+					img.badge-icon-info(src='/images/happy.png' alt='happy')
+					p.badge-num-popover.info-happy 0
+				.info-badge-square.info-funny-square
+					img.badge-icon-info(src='/images/funny.png' alt='funny')
+					p.badge-num-popover.info-funny 0
+				.info-badge-square.info-sad-square
+					img.badge-icon-info(src='/images/sad.png' alt='sad')
+					p.badge-num-popover.info-sad 0
+				.info-badge-square.info-angry-square
+					img.badge-icon-info(src='/images/angry.png' alt='angry')
+					p.badge-num-popover.info-angry 0
+				p.info-box-comment-count
+				//.info-box-comment-wrap
+				//	p.info-box-comment-text This is an example comment to get a sense of what this is going to be like.
+				//	a.info-box-read-link(href="") Continue reading
+
+
+				//Go to selection link
+				//a.comment(href='#'+theComment.id) Go to selection
+
 			p &nbsp
 
 	script(type='text/javascript').
