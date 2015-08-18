@@ -215,6 +215,22 @@ body {
 	float: left;
 }
 
+.page-nav-wrap {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+a.page-prev {
+	text-align: center;
+	margin-right: 20px;
+}
+
+a.page-next{
+	text-align: center;
+}
+
 
 /*------------------ Item --------------------*/
 

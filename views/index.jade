@@ -48,6 +48,13 @@ block content
 				//each item in items
 				each item in stories
 					+item(item)
+				if pageNum >1
+					.page-nav-wrap
+						a.page-prev(href='/stories/'+sideEmph+'/'+(pageNum-1)) Prev
+						a.page-next(href='/stories/'+sideEmph+'/'+(pageNum+1)) Next
+				else
+					.page-nav-wrap
+						a.page-next(href='/stories/'+sideEmph+'/'+(pageNum+1)) Next
 		.main-right
 			p &nbsp
 

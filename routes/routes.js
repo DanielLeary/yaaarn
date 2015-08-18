@@ -14,6 +14,7 @@ var localVars = require('../models2/offlineDb');
 localVars.loginError = false;
 localVars.loggedIn = false;
 localVars.sideEmph = 'popular';
+localVars.pageNum = 1;
 
 
 
@@ -30,9 +31,10 @@ router.get('/', function(req, res, next) {
 	localVars.loggedIn = req.isAuthenticated();
 	localVars.navLogin = false;
 	localVars.sideEmph = 'popular';
+	localVars.pageNum = 1;
 
 	models.Story.findAll({ 
-    	limit: 50,
+    	limit: 20,
     	// Newest first
     	order :[['points', 'DESC'],['date','DESC']] 
     }).then(function(stories) {
@@ -55,9 +57,10 @@ router.get('/stories', function(req, res, next) {
 	localVars.loggedIn = req.isAuthenticated();
 	localVars.navLogin = false;
 	localVars.sideEmph = 'popular';
+	localVars.pageNum = 1;
 
 	models.Story.findAll({ 
-    	limit: 50,
+    	limit: 20,
     	// Newest first
     	order :[['points', 'DESC'],['date','DESC']] 
     }).then(function(stories) {
@@ -80,9 +83,11 @@ router.get('/stories/recent', function(req, res, next) {
 	localVars.loggedIn = req.isAuthenticated();
 	localVars.navLogin = false;
 	localVars.sideEmph = 'recent';
+	localVars.pageNum = 1;
+
 
 	models.Story.findAll({ 
-    	limit: 50,
+    	limit: 20,
     	// Newest first
     	order :[['date', 'DESC']] 
     }).then(function(stories) {
@@ -105,9 +110,12 @@ router.get('/stories/popular', function(req, res, next) {
 	localVars.loggedIn = req.isAuthenticated();
 	localVars.navLogin = false;
 	localVars.sideEmph = 'popular';
+	localVars.pageNum = 1;
+	console.log(('break').red);
+	console.log(localVars.pageNum);
 
 	models.Story.findAll({ 
-    	limit: 50,
+    	limit: 20,
     	// Newest first
     	order :[['points', 'DESC'],['date','DESC']] 
     }).then(function(stories) {
@@ -117,6 +125,90 @@ router.get('/stories/popular', function(req, res, next) {
     	console.log(error);
     })
 	//res.render('index', localVars);
+});
+
+router.param('page', function (req, res, next, page) {
+  req.page = new Number(page);
+
+  next();
+})
+
+
+router.get('/stories/popular/:page', function(req, res, next) {
+	if (req.user) {
+		console.log("req.user.username is ".green +req.user.username);
+		localVars.username = req.user.username;
+	}
+	else {
+		localVars.username = null;
+	}
+	localVars.loggedIn = req.isAuthenticated();
+	localVars.navLogin = false;
+	localVars.sideEmph = 'popular';
+
+	var page = req.page;
+	req.page = 1;
+	localVars.pageNum = page;
+
+	if(page<2){
+		localVars.pageNum = 1;
+		res.redirect('/stories/popular')
+	}
+
+	var perPage = 20;
+	var theLimit = page*perPage;
+	var theOffset = ((page-1)*perPage)+1;
+
+	models.Story.findAll({ 
+    	limit: theLimit,
+    	offset: theOffset,
+    	// Newest first
+    	order :[['points', 'DESC'],['date','DESC']] 
+    }).then(function(stories) {
+    	localVars.stories = stories;
+    	res.render('index', localVars); 
+    }).catch(function(error) {
+    	console.log(error);
+    })
+});
+
+router.get('/stories/recent/:page', function(req, res, next) {
+	if (req.user) {
+		console.log("req.user.username is ".green +req.user.username);
+		localVars.username = req.user.username;
+	}
+	else {
+		localVars.username = null;
+	}
+	localVars.loggedIn = req.isAuthenticated();
+	localVars.navLogin = false;
+	localVars.sideEmph = 'recent';
+
+	var page = req.page;
+	req.page = 1;
+	localVars.pageNum = page;
+
+	if(page<2){
+		localVars.pageNum = 1;
+		res.redirect('/stories/recent')
+	}
+
+	var perPage = 20;
+	var theLimit = page*perPage;
+	var theOffset = ((page-1)*perPage)+1;
+
+	models.Story.findAll({ 
+    	limit: theLimit,
+    	offset: theOffset,
+    	// Newest first
+    	order :[['date', 'DESC']] 
+    }).then(function(stories) {
+    	localVars.stories = stories;
+    	res.render('index', localVars); 
+    }).catch(function(error) {
+    	console.log(error);
+    })
+	//res.render('i
 });
 
 //- END Main routes --------------------------------------------
@@ -149,49 +241,7 @@ router.param('storyslug', function (req, res, next, slug) {
   req.slug = slug;
   next();
 })
-/*
-router.get('/post/:storyslug', function(req, res, next) {
-	var slug = req.slug;
-	if (req.user) {
-		localVars.username = req.user.username;
-	}
-	else {
-		localVars.username = null;
-	}
-  	models.Story.findOne({ 
-    	where: {slugurl: slug} 
-    }).then(function(story) {
-    	if (!story) {
-		    //no story;
-		    res.status(404);
-		    res.render('error', {
-			    message: '404 - Not Found',
-			    error: {}
-			});
-    	}
-    	localVars.theStory = story;
-    	localVars.sideEmph = 'none';
 
-    	// Get comments on this by user
-    	models.Comment.findAll({
-		  where: {
-		    storyId: story.id
-		  }
-		}).then(function(comments){
-			localVars.allComments = [];
-			if(comments.length>0){
-				localVars.allComments = comments;
-			}
-			res.render('postrender', localVars); 
-		}).catch(function(error) {
-    		console.log(error);
-    	});
-
-    }).catch(function(error) {
-    	console.log(error);
-    });
-});
-*/
 
 router.get('/post/:storyslug', function(req, res, next) {
 	var slug = req.slug;
