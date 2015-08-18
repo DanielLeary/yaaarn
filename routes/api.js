@@ -115,7 +115,7 @@ router.post('/submit-comment', function(req, res, next) {
 	    authorName: req.user.username,
 	    authorLink: '/user/' + req.user.username,
 	    sentenceId: 0,
-	    storyId: req.body.storyId,
+	    StoryId: req.body.storyId,
 	    parentId: 0
 	}).then(function(comment) {
 		
@@ -160,7 +160,7 @@ router.post('/submit-badge', function(req, res, next) {
 	    authorName: req.user.username,
 	    authorLink: '/user/' + req.user.username,
 	    sentenceId: 0,
-	    storyId: req.body.storyId,
+	    StoryId: req.body.storyId,
 	    badgeType: req.body.badgeType
 	}).then(function(comment) {
 		
@@ -214,7 +214,7 @@ router.post('/get-story-data', function(req, res, next) {
 
 	models.Comment.findAll({
 		where: {
-			storyId: req.body.storyId
+			StoryId: req.body.storyId
 		}
 	}).then(function(comments){
 		dataToSend.comments = comments;
@@ -228,7 +228,7 @@ router.post('/get-story-data', function(req, res, next) {
 
 			models.Badge.findAll({
 				where: {
-					storyId: req.body.storyId
+					StoryId: req.body.storyId
 				}
 			}).then(function(badges){
 				dataToSend.badges = badges;

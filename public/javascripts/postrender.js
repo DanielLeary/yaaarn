@@ -436,7 +436,7 @@ function refreshCommentUI(){
 		node.children('p.comment').text(currentComment.text);
 		node.children('ul.comment-bottom')
 			.children('li.comment')
-				.children('a.comment-author').attr('href', '/profile/'+currentComment.authorName);
+				.children('a.comment-author').attr('href', '/user/'+currentComment.authorName);
 		node.children('ul.comment-bottom')
 			.children('li.comment')
 				.children('a.comment-author').text(currentComment.authorName);

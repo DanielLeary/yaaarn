@@ -2,8 +2,7 @@ var cheerio = require('cheerio');
 
 module.exports = {
 	
-addStoryTags: function(Text)
-{
+addStoryTags: function(Text){
     $ = cheerio.load(Text);
     $('h1').addClass('h1-story');
     $('h2').addClass('h2-story');
@@ -25,6 +24,13 @@ addStoryTags: function(Text)
 
 	return $.html();
 },
+
+addTypeToModel: function(commentList, typeString){
+    for (var i=0; i<commentList.length; ++i){
+        commentList[i].theType = typeString;
+    }
+},
+
 
 	
 }

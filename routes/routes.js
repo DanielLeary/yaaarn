@@ -29,7 +29,7 @@ router.get('/', function(req, res, next) {
 		localVars.username = null;
 	}
 	localVars.loggedIn = req.isAuthenticated();
-	localVars.navLogin = false;
+	localVars.topEmph = 'stories';
 	localVars.sideEmph = 'popular';
 	localVars.pageNum = 1;
 
@@ -55,7 +55,7 @@ router.get('/stories', function(req, res, next) {
 		localVars.username = null;
 	}
 	localVars.loggedIn = req.isAuthenticated();
-	localVars.navLogin = false;
+	localVars.topEmph = 'stories';
 	localVars.sideEmph = 'popular';
 	localVars.pageNum = 1;
 
@@ -81,7 +81,7 @@ router.get('/stories/recent', function(req, res, next) {
 		localVars.username = null;
 	}
 	localVars.loggedIn = req.isAuthenticated();
-	localVars.navLogin = false;
+	localVars.topEmph = 'stories';
 	localVars.sideEmph = 'recent';
 	localVars.pageNum = 1;
 
@@ -108,7 +108,7 @@ router.get('/stories/popular', function(req, res, next) {
 		localVars.username = null;
 	}
 	localVars.loggedIn = req.isAuthenticated();
-	localVars.navLogin = false;
+	localVars.topEmph = 'stories';
 	localVars.sideEmph = 'popular';
 	localVars.pageNum = 1;
 	console.log(('break').red);
@@ -143,7 +143,7 @@ router.get('/stories/popular/:page', function(req, res, next) {
 		localVars.username = null;
 	}
 	localVars.loggedIn = req.isAuthenticated();
-	localVars.navLogin = false;
+	localVars.topEmph = 'stories';
 	localVars.sideEmph = 'popular';
 
 	var page = req.page;
@@ -181,7 +181,7 @@ router.get('/stories/recent/:page', function(req, res, next) {
 		localVars.username = null;
 	}
 	localVars.loggedIn = req.isAuthenticated();
-	localVars.navLogin = false;
+	localVars.topEmph = 'stories';
 	localVars.sideEmph = 'recent';
 
 	var page = req.page;
@@ -225,7 +225,7 @@ router.get('/login-signup', function(req, res, next) {
 	else {
 		localVars.loginError = false;
 	}
-	localVars.navLogin = true;
+	localVars.topEmph = 'login';
 	res.render('loginSignup', localVars);
 });
 
@@ -268,7 +268,7 @@ router.get('/post/:storyslug', function(req, res, next) {
     	// Get comments on this by user
     	models.Comment.findAll({
 		  where: {
-		    storyId: story.id
+		    StoryId: story.id
 		  }
 		}).then(function(comments){
 			localVars.allComments = [];
@@ -289,7 +289,7 @@ router.get('/post/:storyslug', function(req, res, next) {
 				//Get all badges for user
 				models.Badge.findAll({
 					where: {
-						storyId: story.id
+						StoryId: story.id
 					}
 				}).then(function(badges){
 					localVars.allBadges = [];
@@ -355,6 +355,72 @@ router.post('/post-preview', function(req, res, next) {
 });
 
 
+router.param('theUser', function (req, res, next, theUser) {
+  req.theUser = theUser;
+  next();
+})
+
+
+router.get('/user/:theUser', function(req, res, next) {
+	if (req.user) {
+		localVars.username = req.user.username;
+	}
+	else {
+		localVars.username = null;
+	}
+    localVars.loggedIn = req.isAuthenticated();
+	localVars.topEmph = 'profile';
+    localVars.sideEmph = 'none';
+    localVars.theUser = req.theUser;
+    
+    models.Comment.findAll({
+    	where: {
+    		authorName: req.theUser
+    	},
+    	include: [models.Story]
+    }).then(function(comments){
+    	//console.log(JSON.stringify(comments[0].text).green);
+    	//console.log(JSON.stringify(comments[0].Story.title).green);
+    	helpers.addTypeToModel(comments,'comment');
+    	localVars.usersComments = comments;
+    	
+    	models.Badge.findAll({
+    		where: {
+    			authorName: req.theUser
+    		},
+    		include: [models.Story]
+    	}).then(function(badges){
+    		helpers.addTypeToModel(badges,'badge');
+    		localVars.usersBadges = badges;
+
+			models.Story.findAll({
+	    		where: {
+	    			authorName: req.theUser
+	    		}
+	    	}).then(function(stories){
+	    		helpers.addTypeToModel(stories,'story');
+	    		localVars.usersStories = stories;
+
+	    		localVars.usersContent = stories.concat(badges).concat(comments);
+	    		localVars.usersContent.sort(function(a,b){
+	    			if(a.date > b.date)
+	    				return -1;
+	    			if(a.date < b.date)
+	    				return 1;
+	    			else
+	    				return 0;
+	    		});
+
+    			res.render('profile', localVars);
+    		})
+    	})
+
+    })
+
+});
+
 
 module.exports = router;
+
+
 

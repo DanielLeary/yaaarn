@@ -923,6 +923,163 @@ a.info-box-read-link{
 	text-decoration: underline;
 }
 
+/*------------------ Profile --------------------*/
+
+.profile-username{
+	margin-left: 40px;
+	margin-right: 40px;	
+	margin-top: 0px; 
+	margin-bottom: 0px; 
+	padding-bottom: 15px;
+	border-bottom: 1px solid #F0F0F0;
+}
+
+.profile-comment {
+	margin-left: 40px;
+	margin-right: 40px;
+	padding-bottom: 12px;
+	padding-top: 15px;
+	border-bottom: 1px solid #F0F0F0;
+}
+.profile-story{
+	margin-left: 40px;
+	margin-right: 40px;
+	padding-bottom: 12px;
+	padding-top: 15px;
+	border-bottom: 1px solid #F0F0F0;
+}
+.profile-badge{
+	margin-left: 40px;
+	margin-right: 40px;
+	padding-bottom: 12px;
+	padding-top: 15px;
+	border-bottom: 1px solid #F0F0F0;
+}
+
+
+p.profile-info {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	border: none;
+
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	color: #bababa;
+} 
+p.profile-info-badge {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	border: none;
+
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	color: #1E1E1E;
+} 
+
+a.profile-link {
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+	border: none;
+
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	color: #bababa;
+	text-decoration: underline;
+}
+a.profile-title {
+	font-family: 'Merriweather', sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	color: #1171b8;
+	margin-top: 5px !important;
+	margin-bottom: 5px !important;
+	line-height: 28px;
+}
+a.profile-title-story {
+	font-family: 'Merriweather', sans-serif;
+	font-weight: 400;
+	font-size: 18px;
+	color: #1171b8;
+	display: block;
+	margin-top: 5px !important;
+	margin-bottom: 5px !important;
+	line-height: 28px;
+}
+p.profile-comment-text{
+	font-family: 'Merriweather', sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	color: #1E1E1E;
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	line-height: 28px;
+}
+
+p.profile-date {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+	border: none;
+
+	font-family: 'Lato', sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	color: #bababa;
+}
+
+
+
+span.profile-badge-type {
+
+}
+#profile-happy{
+	color: white;
+	background-color: #2ECC71;
+	-webkit-border-radius: 4px;
+  	-moz-border-radius: 4px;
+  	border-radius: 4px;
+  	padding-left: 5px;
+  	padding-right: 5px;
+  	padding-bottom: 3px;
+  	padding-top: 1px;
+}
+#profile-funny{
+	color: white;
+	background-color: #9B59B6;
+	-webkit-border-radius: 4px;
+  	-moz-border-radius: 4px;
+  	border-radius: 4px;
+  	padding-left: 5px;
+  	padding-right: 5px;
+  	padding-bottom: 3px;
+  	padding-top: 1px;
+}
+#profile-sad{
+	color: white;
+	background-color: #3498DB;
+	-webkit-border-radius: 4px;
+  	-moz-border-radius: 4px;
+  	border-radius: 4px;
+  	padding-left: 5px;
+  	padding-right: 5px;
+  	padding-bottom: 3px;
+  	padding-top: 1px;
+}
+#profile-angry{
+	color: white;
+	background-color: #E74C3C;
+	-webkit-border-radius: 4px;
+  	-moz-border-radius: 4px;
+  	border-radius: 4px;
+  	padding-left: 5px;
+  	padding-right: 5px;
+  	padding-bottom: 3px;
+  	padding-top: 1px;
+}
+
 
 
 

@@ -8,8 +8,8 @@ nav.custom-nav
 			//Collect the nav links, forms, and other content for toggling
 			div.main-nav-wrap
 				
-				case navLogin
-					when true
+				case topEmph
+					when 'login'
 						div.link-wrap
 							img.icon-custom(src='/images/icon_news2.png', alt='news')
 							a.nav-link(href='/stories') Stories
@@ -18,11 +18,11 @@ nav.custom-nav
 								img.icon-custom.icon-active(src='/images/icon_cog.png', alt='settings')
 								a.nav-link.active-link(href='/login-signup') Login/Signup
 							else
-								//img.icon-custom(src='/images/icon_profile.png', alt='profile')
-								//a.nav-link(href='/profile') Profile
+								img.icon-custom(src='/images/icon_profile.png', alt='profile')
+								a.nav-link(href='/user/'+username) Profile
 								img.icon-custom(src='/images/icon_cog.png', alt='settings')
 								a.nav-link(href='/logout') Logout
-					default
+					when 'stories'
 						div.link-wrap
 							img.icon-custom.icon-active(src='/images/icon_news2.png', alt='news')
 							a.nav-link.active-link(href='/stories') Stories
@@ -31,8 +31,21 @@ nav.custom-nav
 								img.icon-custom(src='/images/icon_cog.png', alt='settings')
 								a.nav-link(href='/login-signup') Login/Signup
 							else
-								//img.icon-custom(src='/images/icon_profile.png', alt='profile')
-								//a.nav-link(href='/profile') Profile
+								img.icon-custom(src='/images/icon_profile.png', alt='profile')
+								a.nav-link(href='/user/'+username) Profile
+								img.icon-custom(src='/images/icon_cog.png', alt='settings')
+								a.nav-link(href='/logout') Logout
+					default
+						div.link-wrap
+							img.icon-custom(src='/images/icon_news2.png', alt='news')
+							a.nav-link(href='/stories') Stories
+							
+							if !loggedIn
+								img.icon-custom(src='/images/icon_cog.png', alt='settings')
+								a.nav-link(href='/login-signup') Login/Signup
+							else
+								img.icon-custom.icon-active(src='/images/icon_profile.png', alt='profile')
+								a.nav-link.active-link(href='/user/'+username) Profile
 								img.icon-custom(src='/images/icon_cog.png', alt='settings')
 								a.nav-link(href='/logout') Logout
 				if loggedIn

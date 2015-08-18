@@ -10,7 +10,7 @@ mixin item(theItem)
 					p.item.dot!= '&#8226;'
 				li.item
 					p.item
-						a.item(href='/post/'+theItem.commentUrl) #{theItem.comments} comments
+						a.item(href='/post/'+theItem.slugurl+'#commentSection') #{theItem.comments} comments
 					p.item.dot!= '&#8226;'
 				li.item
 					p.item

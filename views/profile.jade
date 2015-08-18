@@ -1,0 +1,46 @@
+extends layout
+
+mixin comment(theComment)
+	.profile-comment
+		p.profile-info Commented on 
+			a.profile-link(href="/post/"+theComment.Story.slugurl) #{theComment.Story.title} 
+		p.profile-comment-text #{theComment.text}
+		p.profile-date #{theComment.humanDate()}
+
+mixin badge(theBadge)
+	.profile-badge
+		p.profile-info-badge Gave a 
+			span.profile-badge-type(id='profile-'+theBadge.badgeType) #{theBadge.badgeType}
+			|  badge to 
+			a.profile-title(href="/post/"+theBadge.Story.slugurl) #{theBadge.Story.title} 
+		p.profile-date #{theBadge.humanDate()}
+
+mixin story(theStory)
+	.profile-story
+		p.profile-info Posted a story 
+		a.profile-title-story(href="/post/"+theStory.slugurl) #{theStory.title} 
+		p.profile-date #{theStory.humanDate()}
+
+block content
+
+	include nav.jade
+
+	div.main-wrap
+		include mainLeft.jade
+		.main-content
+			h2.profile-username #{theUser}
+			.main-content-inner
+				each content in usersContent
+					if content.theType == 'comment'
+						+comment(content)
+					else if content.theType == 'badge'
+						+badge(content)
+					else if content.theType == 'story'
+						+story(content)
+				
+		.main-right
+			p &nbsp
+
+
+
+

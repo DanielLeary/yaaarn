@@ -8,13 +8,13 @@ module.exports = function(sequelize, DataTypes) {
     authorName: DataTypes.TEXT,
     authorLink: DataTypes.TEXT,
     sentenceId: DataTypes.BIGINT,
-    storyId: DataTypes.INTEGER,
     badgeType: DataTypes.TEXT
   }, {
     classMethods: {
       
       associate: function(models) {
-        Badge.hasMany(models.BadgeSentence)
+        Badge.hasMany(models.BadgeSentence);
+        Badge.belongsTo(models.Story);
       }
     },
 

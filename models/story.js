@@ -20,11 +20,10 @@ module.exports = function(sequelize, DataTypes) {
     angry: DataTypes.INTEGER
   }, {
     classMethods: {
-      /*
       associate: function(models) {
-        User.hasMany(models.Task)
+        Story.hasMany(models.Comment);
+        Story.hasMany(models.Badge);
       }
-      */
     },
 
     instanceMethods: {

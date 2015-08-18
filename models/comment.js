@@ -9,13 +9,13 @@ module.exports = function(sequelize, DataTypes) {
     authorName: DataTypes.TEXT,
     authorLink: DataTypes.TEXT,
     sentenceId: DataTypes.BIGINT,
-    storyId: DataTypes.INTEGER,
     parentId: DataTypes.INTEGER
   }, {
     classMethods: {
       
       associate: function(models) {
-        Comment.hasMany(models.CommentSentence)
+        Comment.hasMany(models.CommentSentence);
+        Comment.belongsTo(models.Story);
       }
     },
 
