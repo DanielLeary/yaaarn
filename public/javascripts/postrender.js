@@ -32,6 +32,23 @@ $( document ).ready(function() {
 		console.log('URL param is '+getUrlParameter('badgeId'));
 	}
 
+	// Same param linking from profile for comments
+	if(getUrlParameter('commentId')!='No param'){
+		var commentId = getUrlParameter('commentId');
+		hiAssociatedSentences(commentId);
+
+		//loop reversed to get scroll to top sentence (not sure why)
+		for (var i=commentSentences.length-1; i>=0; --i){
+			if (commentSentences[i].CommentId==commentId)
+				var firstSentenceListed = commentSentences[i].sentenceId;
+		}
+
+		$('html, body').animate({
+        	scrollTop: $('#'+firstSentenceListed).offset().top
+    	}, 200);
+		console.log('URL param is '+getUrlParameter('commentId'));
+	}
+
 });
 
 $(".sentence").click(function(){

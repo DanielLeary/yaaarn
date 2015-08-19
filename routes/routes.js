@@ -245,6 +245,8 @@ router.param('storyslug', function (req, res, next, slug) {
 
 router.get('/post/:storyslug', function(req, res, next) {
 	var slug = req.slug;
+	localVars.topEmph = 'stories';
+
 	if (req.user) {
 		localVars.username = req.user.username;
 	}

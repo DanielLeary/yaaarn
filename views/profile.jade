@@ -3,7 +3,7 @@ extends layout
 mixin comment(theComment)
 	.profile-comment
 		p.profile-info Commented on 
-			a.profile-link(href="/post/"+theComment.Story.slugurl) #{theComment.Story.title} 
+			a.profile-link(href="/post/"+theComment.Story.slugurl+'?commentId='+theComment.id) #{theComment.Story.title} 
 		p.profile-comment-text #{theComment.text}
 		p.profile-date #{theComment.humanDate()}
 
