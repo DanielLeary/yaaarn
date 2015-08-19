@@ -15,6 +15,22 @@ $( document ).ready(function() {
 	// Create comment section at bottom
 	refreshCommentUI();
 
+	// This lets us scroll to badge sentences from profile
+	if(getUrlParameter('badgeId')!='No param'){
+		var badgeId = getUrlParameter('badgeId');
+		hiBadgeSentences(badgeId);
+
+		//loop reversed to get scroll to top sentence (not sure why)
+		for (var i=badgeSentences.length-1; i>=0; --i){
+			if (badgeSentences[i].BadgeId==badgeId)
+				var firstSentenceListed = badgeSentences[i].sentenceId;
+		}
+
+		$('html, body').animate({
+        	scrollTop: $('#'+firstSentenceListed).offset().top
+    	}, 200);
+		console.log('URL param is '+getUrlParameter('badgeId'));
+	}
 
 });
 
@@ -302,7 +318,7 @@ $(".sentence").hover(function(){
 		}
 		node.children('.info-box-comment-text').text(theText);
 		node.children('a.info-box-read-link').attr('href', '#comment-'+currentComment.id);
-		node.children('a.info-box-author').attr('href', '/profile/'+currentComment.authorName);
+		node.children('a.info-box-author').attr('href', '/user/'+currentComment.authorName);
 		node.children('a.info-box-author').text(currentComment.authorName+" said");
 		node.appendTo('.info-box-wrap');
 
@@ -349,6 +365,15 @@ function hiAssociatedSentences(commentId) {
 	for (var i=0; i<commentSentences.length; ++i){
 		if (commentSentences[i].CommentId==commentId){
 			var sentenceId = commentSentences[i].sentenceId;
+			$('#'+sentenceId).addClass('highlight-sentence');
+		}
+	}
+}
+
+function hiBadgeSentences(badgeId) {
+	for (var i=0; i<badgeSentences.length; ++i){
+		if (badgeSentences[i].BadgeId==badgeId){
+			var sentenceId = badgeSentences[i].sentenceId;
 			$('#'+sentenceId).addClass('highlight-sentence');
 		}
 	}
@@ -469,6 +494,24 @@ function hasContentStyle(){
 			sentenceNode.addClass('has-content');
 	}
 }
+
+function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+        else{
+        	return 'No param';
+        }
+    }
+};
 
 
 

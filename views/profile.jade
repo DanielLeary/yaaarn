@@ -12,7 +12,7 @@ mixin badge(theBadge)
 		p.profile-info-badge Gave a 
 			span.profile-badge-type(id='profile-'+theBadge.badgeType) #{theBadge.badgeType}
 			|  badge to 
-			a.profile-title(href="/post/"+theBadge.Story.slugurl) #{theBadge.Story.title} 
+			a.profile-title(href="/post/"+theBadge.Story.slugurl+'?badgeId='+theBadge.id) #{theBadge.Story.title} 
 		p.profile-date #{theBadge.humanDate()}
 
 mixin story(theStory)
