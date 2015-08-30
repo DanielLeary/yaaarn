@@ -676,6 +676,7 @@ a.story-info {
 	bottom: 0;
 	padding-top: 25px;
 	padding-bottom: 30px;
+	display: none;
 }
 
 .thePopover-comment-wrap {
@@ -860,6 +861,7 @@ a.comment-author {
 /*------------------ Info box --------------------*/
 
 .info-box-wrap {
+	display: none;
 	position: absolute;
 	top: 900px;
 	left: 900px;

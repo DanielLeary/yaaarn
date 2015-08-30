@@ -111,8 +111,6 @@ router.get('/stories/popular', function(req, res, next) {
 	localVars.topEmph = 'stories';
 	localVars.sideEmph = 'popular';
 	localVars.pageNum = 1;
-	console.log(('break').red);
-	console.log(localVars.pageNum);
 
 	models.Story.findAll({ 
     	limit: 20,
