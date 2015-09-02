@@ -64,8 +64,13 @@ $(".sentence").click(function(){
 		return;
 	}
 
-	$('.thePopover').show(100);
-	$('#commentSection').css({ "padding-bottom" : "220px"});
+	var maxSelect = 1;
+
+	if (theUsername) {
+		$('.thePopover').show(100);
+		$('#commentSection').css({ "padding-bottom" : "220px"});
+		maxSelect = 5;
+	}
 
 
 	// If clicked sentence in selected list - remove from list
@@ -82,7 +87,7 @@ $(".sentence").click(function(){
 	}
 	else {
 		//Deselect first sentence if we've selected 5 already
-		if (sentencesSelected.length>4){
+		if (sentencesSelected.length>maxSelect-1){
 			$('#'+sentencesSelected[0]).removeClass('active-sentence');
 			removeSelected(sentencesSelected[0]);
 			$(this).addClass('active-sentence');
